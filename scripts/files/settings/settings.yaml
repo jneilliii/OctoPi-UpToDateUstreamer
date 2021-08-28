@@ -1,0 +1,94 @@
+plugins:
+  uicustomizer:
+    centerTopIcons: false
+    compressTempControls: false
+    customCSS: 'div#bedlevelvisualizergraph { min-height: 800px }'
+    disableTermInactive: true
+    fixedFooter: false
+    hideGraphBackground: false
+    mainTabs:
+    - - temp_link
+      - true
+      - false
+      - false
+      - textOnly
+      - '#000000'
+    - - control_link
+      - true
+      - false
+      - false
+      - textOnly
+      - '#000000'
+    - - gcode_link
+      - true
+      - false
+      - false
+      - textOnly
+      - '#000000'
+    - - term_link
+      - true
+      - false
+      - false
+      - textOnly
+      - '#000000'
+    - - timelapse_link
+      - true
+      - false
+      - false
+      - textOnly
+      - '#000000'
+    - - tab_plugin_tasmota_link
+      - true
+      - false
+      - false
+      - textOnly
+      - '#000000'
+    - - tab_plugin_tplinksmartplug_link
+      - true
+      - false
+      - false
+      - textOnly
+      - '#000000'
+    - - tab_plugin_gridspace_link
+      - true
+      - false
+      - false
+      - textOnly
+      - '#000000'
+    - - tab_plugin_printscheduler_link
+      - true
+      - false
+      - false
+      - textOnly
+      - '#000000'
+    navbarplugintempfix: false
+    rows:
+    - _00#files_wrapper: true
+      _01#sidebar_plugin_firmware_check_warning_wrapper: false
+      _02#sidebar_plugin_firmware_check_info_wrapper: false
+      _03#sidebar_plugin_tplinksmartplug_wrapper: false
+      _04#UICWebCamWidget: false
+      _05#UICGcodeVWidget: false
+      _06#UICTempWidget: false
+    - _00div.UICmainTabs: true
+    - _00#connection_wrapper: true
+      _01#state_wrapper: true
+      _02#sidebar_plugin_action_command_notification_wrapper: true
+      _03#sidebar_plugin_tasmota_wrapper: true
+    theme: discoranged
+    themeLocal: false
+    themeVersion: 0.2.4
+    topIconSort:
+    - navbar_plugin_action_command_prompt
+    - navbar_plugin_logging_seriallog
+    - navbar_plugin_logging_plugintimingslog
+    - navbar_plugin_pi_support
+    - navbar_plugin_toptemp
+    - navbar_plugin_tasmota
+    - navbar_plugin_tplinksmartplug
+    - navbar_plugin_firmwareupdater
+    webcamzoomtype: full
+    widths:
+    - '3'
+    - '6'
+    - '3'
