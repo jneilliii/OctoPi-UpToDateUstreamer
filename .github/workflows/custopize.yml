@@ -51,7 +51,11 @@ jobs:
 
         OCTOPI_VERSION=$(basename -s .img $IMAGE | awk -F"-" '{print $NF}')
         echo "OCTOPI_VERSION=$OCTOPI_VERSION" >> $GITHUB_ENV
-
+    - id: octopi_latestrelease
+      name: ⬇ Get OctoPi Version
+      uses: pozetroninc/github-action-get-latest-release@master
+      with:
+        repository: guysoft/OctoPi
     - name: "🏗 Run CustoPiZer"
       run: |
         sudo modprobe loop
@@ -63,7 +67,7 @@ jobs:
 
     - name: "📦 Package the image"
       run: |
-        OCTOPI_VERSION="${{ env.OCTOPI_VERSION }}"
+        OCTOPI_VERSION="${{ steps.octopi_latestrelease.outputs.release }}"
         OCTOPRINT_VERSION="${{ env.OCTOPRINT_VERSION }}"
         
         IMAGE="octopi-$OCTOPI_VERSION-$OCTOPRINT_VERSION-ustreamer.img"
@@ -77,10 +81,10 @@ jobs:
     
     - name: "📝 Prepare release"
       run: |
-        RELEASE_NAME="OctoPi ${{ env.OCTOPI_VERSION }} with OctoPrint ${{ env.OCTOPRINT_VERSION }} and µStreamer"
+        RELEASE_NAME="OctoPi ${{ steps.octopi_latestrelease.outputs.release }} with OctoPrint ${{ env.OCTOPRINT_VERSION }} and µStreamer"
         echo "RELEASE_NAME=$RELEASE_NAME" >> $GITHUB_ENV
 
-        RELEASE_TAG="${{ env.OCTOPI_VERSION }}.op${{ env.OCTOPRINT_VERSION }}"
+        RELEASE_TAG="${{ steps.octopi_latestrelease.outputs.release }}.op${{ env.OCTOPRINT_VERSION }}"
         echo "RELEASE_TAG=$RELEASE_TAG" >> $GITHUB_ENV
 
         RELEASE_BODY=""
