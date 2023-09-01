@@ -16,7 +16,7 @@ jobs:
 
     - id: my_latestrelease
       name: ⬇ Get My Version
-      uses: jneilliii/github-action-get-latest-release@master
+      uses: pozetroninc/github-action-get-latest-release@master
       with:
         repository: ${{ github.repository }}
         excludes: prerelease, draft
@@ -24,7 +24,7 @@ jobs:
 
     - id: octoprint_latestrelease
       name: ⬇ Get OctoPrint Version
-      uses: jneilliii/github-action-get-latest-release@master
+      uses: pozetroninc/github-action-get-latest-release@master
       with:
         repository: OctoPrint/OctoPrint
         excludes: prerelease, draft
@@ -32,7 +32,7 @@ jobs:
 
     - id: octopi_latestrelease
       name: ⬇ Get OctoPi Version
-      uses: jneilliii/github-action-get-latest-release@master
+      uses: pozetroninc/github-action-get-latest-release@master
       with:
         repository: guysoft/OctoPi
         excludes: prerelease, draft
