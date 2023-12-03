@@ -9,7 +9,9 @@ install_cleanup_trap
 ### --- install the new stuff -----------------------------------------------
 
 # install camera-streamer and dependencies
-apt-get install --yes camera-streamer-raspi
+# apt-get install --yes camera-streamer
+wget https://github.com/ayufan/camera-streamer/releases/download/v0.2.8/camera-streamer-raspi_0.2.8.bullseye_arm64.deb
+sudo apt install camera-streamer-raspi_0.2.8.bullseye_arm64.deb
 
 # install units, configs & helpers
 pushd /tmp
