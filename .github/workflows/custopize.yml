@@ -156,7 +156,7 @@ jobs:
 
     - name: "✏ Rename image"
       run: |
-        RELEASE_TAG="${{ env.RELEASE_TAG }}"
+        RELEASE_TAG="${{ steps.octopi_latestrelease.outputs.release }}"
 
         IMAGE="octopi-$RELEASE_TAG.img"
         echo "IMAGE=$IMAGE" >> $GITHUB_ENV
@@ -197,8 +197,8 @@ jobs:
         prerelease: ${{ contains(env.OCTOPRINT_VERSION, 'rc') }}
         fail_on_unmatched_files: true
         files: |
-          build/${{ env.IMAGE }}.zip
-          build/${{ env.IMAGE }}.zip.md5
-          build/${{ env.IMAGE }}.zip.sha256
+          build/${{ env.IMAGE_ZIP }}
+          build/${{ env.IMAGE_ZIP }}.md5
+          build/${{ env.IMAGE_ZIP }}.sha256
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
