@@ -1,0 +1,88 @@
+set -x
+set -e
+
+export LC_ALL=C
+
+source /common.sh
+install_cleanup_trap
+
+### --- install the new stuff -----------------------------------------------
+
+# install camera-streamer and dependencies
+apt-get install --yes camera-streamer-raspi
+
+# install units, configs & helpers
+pushd /tmp
+    apt-get install --yes v4l-utils
+    git clone https://github.com/OctoPrint/camera-streamer-stack.git
+    pushd camera-streamer-stack
+        make install
+    popd
+    rm -rf camera-streamer-stack
+popd
+
+# put configs on /boot on OctoPi
+mv /etc/camera-streamer.conf.d /boot/camera-streamer
+ln -s /boot/camera-streamer /etc/camera-streamer.conf.d
+
+# only run stack if mjpeg is selected as streamer
+for unit in camera-streamer camera-streamer-usb@ camera-streamer-libcamera; do
+    mkdir /etc/systemd/system/$unit.service.d/ && \
+        echo -e "[Unit]\nConditionPathExists=/etc/octopi_streamer/mjpeg" > /etc/systemd/system/$unit.service.d/override.conf
+done
+
+# enable camera auto-detection
+sed -i 's/^camera_auto_detect=0/camera_auto_detect=1/' /boot/config.txt
+
+# Only enable the camera-streamer service, it will start the others as configured
+systemctl enable camera-streamer.service
+
+# Swap the Haproxy 503 error page to reference the new webcam stack
+cp /files/503-no-webcam.http /etc/haproxy/errors/503-no-webcam.http
+
+### --- clean up the old stuff ------------------------------------------------
+
+cat > /boot/octopi.txt <<EOF
+### IMPORTANT: Looking for the camera settings? Those are now located
+### in the camera-streamer directory! libcamera.conf to configure the Raspberry Pi
+### camera and usb-default.conf to configure USB cameras. Read more about it here:
+### https://faq.octoprint.org/camera-streamer-config
+
+### Windows users: To edit this file use Notepad++, VSCode or SublimeText.
+### Do not use Notepad or WordPad.
+
+### MacOSX users: If you use Textedit to edit this file make sure to use
+### "plain text format" and "disable smart quotes" in "Textedit > Preferences"
+
+# Configuration of network monitoring
+#
+# This enables network monitoring for wifi connections with a simple ping test.
+# If connection terminates by variable reasons system tries to restart the wifi connection to reestablish a connection.
+# The connection test is done every minute.
+# By default it is disabled (0 = off / 1 = on)
+# destination_host can be an ip address or a hostname (for hostname ensure dns resosultion is working correctly)
+
+enable_network_monitor=0
+
+# Be sure to change this to match your network!
+destination_host=192.168.1.1
+
+### EXPERIMENTAL
+# Support for different streamer types.
+#
+# Available options:
+#   mjpeg [default] - camera-streamer
+#   hls - FFMPEG HLS streamer
+#camera_streamer=mjpeg
+EOF
+
+sed -i 's/webcamd\.service/camera-streamer.service/' /etc/systemd/system/streamer_select.service
+sed -i 's/webcamd\.service/camera-streamer.service/' /root/bin/streamer_select
+
+systemctl disable webcamd
+
+rm /etc/logrotate.d/webcamd
+rm /etc/systemd/system/webcamd.service
+rm /root/bin/webcamd
+rm -rf /opt/mjpg-streamer
+rm /home/pi/mjpg-streamer

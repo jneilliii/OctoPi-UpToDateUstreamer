@@ -10,11 +10,13 @@ and provides the resulting image ready to flash. Checkout the [releases](https:/
 A bunch of simple update scripts are run via [CustoPiZer](https://github.com/OctoPrint/CustoPiZer):
 
   * `00-enforce-32bit-kernel`: Ensures only 32bit kernels are installed (since RPi kernel 6.1 64bit will be installed even on 32bit)
-  * `01-update-octoprint`: Updates OctoPrint to the latest version
-  * `02-update-boot`: Updates bootloader and kernel to the latest version
-  * `03-update-libcamera-apps`: Updates the the libcamera apps to the latest version
+  * `01-add-octoprint-apt-repo`: Adds `apt.octoprint.org` to the apt sources
+  * `02-update-octoprint`: Updates OctoPrint to the latest version
+  * `03-update-boot`: Updates bootloader and kernel to the latest version
+  * `04-update-libcamera-apps`: Updates the the libcamera apps to the latest version
+  * `10-install-camera-streamer`: Installs the new [camera-streamer](https://github.com/ayufan/camera-streamer) based webcam stack, replacing mjpg-streamer and webcamd. The new stack supports libcamera based cameras like the RPi Cam v3 and newer Arducams, and is also more performant. See [the FAQ](https://faq.octoprint.org/camera-streamer-config) for more details.
+  * `11-install-pb`: Installs a small script under `/usr/local/bin/pb` that allows to easily share stdin or a text file to paste.octoprint.org.
   * `80-install-user-fix`: Installs a compatibility layer to support renaming the `pi` user, if needed.
-  * `81-fix-octopi-txt`: Replaces `/boot/octopi.txt` with one with updated documentation regarding camera options.
   * `99-write-build`: Writes the build tag to `/etc/octopiuptodate-build`
 
 ## How do I run this?
@@ -34,7 +36,7 @@ docker run --rm --privileged -v $(pwd)/workspace:/CustoPiZer/workspace $(pwd)/sc
 
 ## Can I do something like this as well?
 
-Sure, check out [CustoPiZer's README](https://github.com/OctoPrint/CustoPiZer) for 
+Sure, check out [CustoPiZer's README](https://github.com/OctoPrint/CustoPiZer) for
 instructions on how to set up your own image build for modified but clean OctoPi images!
 
 ## Are these images available on the download page and in the Raspberry Pi Imager?
