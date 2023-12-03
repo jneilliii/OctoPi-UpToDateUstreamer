@@ -145,11 +145,14 @@ jobs:
         mv $IMAGE input.img
 
     - name: "🏗 Run CustoPiZer"
-      uses: OctoPrint/CustoPiZer@main
-      with:
-        workspace: "${{ github.workspace }}/build"
-        scripts:  "${{ github.workspace }}/scripts"
-        environment: '{ "OCTOPRINT_VERSION": "${{ env.OCTOPRINT_VERSION }}", "RELEASE_TAG": "${{ env.RELEASE_TAG }}" }'
+      run: |
+        sudo modprobe loop
+        docker run --rm --privileged \
+          -e OCTOPRINT_VERSION=${{ env.OCTOPRINT_VERSION }} \
+          -v ${{ github.workspace }}/scripts/files/config.local:/CustoPiZer/config.local \
+          -v ${{ github.workspace }}/build:/CustoPiZer/workspace \
+          -v ${{ github.workspace }}/scripts:/CustoPiZer/workspace/scripts \
+          ghcr.io/octoprint/custopizer:latest
 
     - name: "✏ Rename image"
       run: |
