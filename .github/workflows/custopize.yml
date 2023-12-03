@@ -136,7 +136,7 @@ jobs:
       run: |
         mkdir build
         cd build
-        curl -L -o octopi.zip ${{ env.OCTOPI_URL }}
+        curl -L -o octopi.zip https://github.com/guysoft/OctoPi/releases/download/1.0.0/octopi-bullseye-arm64-lite-1.0.0.zip
 
         unzip octopi.zip
         rm octopi.zip
