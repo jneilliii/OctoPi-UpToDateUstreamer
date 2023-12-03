@@ -9,7 +9,8 @@ install_cleanup_trap
 ### --- install the new stuff -----------------------------------------------
 
 # install camera-streamer and dependencies
-apt-get install --yes camera-streamer-raspi
+# apt-get install --yes camera-streamer-raspi
+apt-get install --yes camera-streamer
 
 # install units, configs & helpers
 pushd /tmp
